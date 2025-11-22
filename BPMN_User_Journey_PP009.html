@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BPMN - User Journey PP-009: Herramientas Digitales para Consultoras</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .diagram-section {
+            margin-bottom: 60px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .diagram-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .diagram-section h3 {
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .diagram-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            min-height: 400px;
+        }
+
+        .description {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #3498db;
+        }
+
+        .description h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .description ul {
+            margin-left: 20px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .description li {
+            margin-bottom: 8px;
+        }
+
+        .legend {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .legend h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .legend-box {
+            width: 30px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #333;
+        }
+
+        .start { background: #28a745; }
+        .task { background: #3498db; }
+        .gateway { background: #ffc107; }
+        .end { background: #dc3545; }
+
+        .note {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            font-style: italic;
+            color: #666;
+            border-left: 3px solid #95a5a6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .diagram-section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 BPMN - User Journey</h1>
+        <p class="subtitle">PP-009: Plataforma Digital para Consultoras de Venta Directa</p>
+
+        <div class="legend">
+            <h3>📋 Leyenda de Elementos BPMN</h3>
+            <div class="legend-item">
+                <div class="legend-box start"></div>
+                <span><strong>Evento de Inicio:</strong> Punto de inicio del proceso</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box task"></div>
+                <span><strong>Tarea:</strong> Actividad realizada por el usuario o sistema</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box gateway"></div>
+                <span><strong>Compuerta (Gateway):</strong> Punto de decisión o bifurcación</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box end"></div>
+                <span><strong>Evento de Fin:</strong> Punto de finalización del proceso</span>
+            </div>
+        </div>
+
+        <!-- Journey Principal Completo -->
+        <div class="diagram-section">
+            <h2>🔄 Journey Principal Completo</h2>
+            <p style="color: #666; margin-bottom: 20px;">Flujo completo desde el inicio de sesión hasta las acciones principales de la consultora</p>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+flowchart TD
+    Start([Inicio: Consultora abre la app]) --> Login{¿Ya está<br/>autenticada?}
+    
+    Login -->|No| Auth[Ingresar credenciales<br/>Email/Teléfono + Contraseña]
+    Auth --> Validate{Validar<br/>credenciales}
+    Validate -->|Válidas| LoadData[Cargar datos de consultora<br/>y sincronizar catálogo]
+    Validate -->|Inválidas| Error[Mostrar error<br/>y permitir reintento]
+    Error --> Auth
+    
+    Login -->|Sí| LoadData
+    LoadData --> CheckConnection{¿Hay<br/>conexión?}
+    
+    CheckConnection -->|Sí| SyncOnline[Sincronizar datos<br/>con servidor]
+    CheckConnection -->|No| UseCache[Usar datos en caché<br/>Modo Offline]
+    
+    SyncOnline --> Dashboard[Dashboard Principal<br/>Ver resumen de ventas]
+    UseCache --> Dashboard
+    
+    Dashboard --> UserAction{¿Qué acción<br/>desea realizar?}
+    
+    UserAction -->|Crear Pedido| FlowPedido[Flujo: Crear Pedido]
+    UserAction -->|Gestionar Clientes| FlowClientes[Flujo: Gestionar Clientes]
+    UserAction -->|Ver Catálogo| FlowCatalogo[Flujo: Ver Catálogo]
+    UserAction -->|Ver Pedidos| FlowPedidos[Flujo: Ver Pedidos]
+    UserAction -->|Ver Perfil| FlowPerfil[Flujo: Ver Perfil]
+    
+    FlowPedido --> Dashboard
+    FlowClientes --> Dashboard
+    FlowCatalogo --> Dashboard
+    FlowPedidos --> Dashboard
+    FlowPerfil --> Dashboard
+    
+    Dashboard --> Logout{¿Cerrar<br/>sesión?}
+    Logout -->|Sí| End([Fin: Cerrar sesión])
+    Logout -->|No| UserAction
+    
+    style Start fill:#28a745,stroke:#1e7e34,stroke-width:3px,color:#fff
+    style End fill:#dc3545,stroke:#c82333,stroke-width:3px,color:#fff
+    style Login fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style Validate fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style CheckConnection fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style UserAction fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style Logout fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style Dashboard fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+                </div>
+            </div>
+
+            <div class="description">
+                <h4>Descripción del Journey Principal</h4>
+                <ul>
+                    <li><strong>Autenticación:</strong> La consultora inicia sesión o la app verifica sesión activa</li>
+                    <li><strong>Sincronización:</strong> Se cargan datos actualizados o se usa caché si no hay conexión</li>
+                    <li><strong>Dashboard:</strong> Punto central de navegación con resumen de negocio</li>
+                    <li><strong>Acciones:</strong> La consultora puede realizar múltiples acciones desde el dashboard</li>
+                    <li><strong>Navegación:</strong> Después de cada acción, regresa al dashboard para continuar trabajando</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Flujo Detallado: Crear Pedido -->
+        <div class="diagram-section">
+            <h2>🛒 Flujo Detallado: Crear Pedido</h2>
+            <p style="color: #666; margin-bottom: 20px;">Proceso completo para crear un nuevo pedido (Flujo crítico - US-003)</p>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+flowchart TD
+    Start([Inicio: Consultora quiere<br/>crear un pedido]) --> SelectMethod{¿Desde dónde<br/>iniciar?}
+    
+    SelectMethod -->|Dashboard| ClickNew[Click en 'Nuevo Pedido']
+    SelectMethod -->|Catálogo| GoCatalog[Ir a Catálogo]
+    
+    ClickNew --> InitCart[Inicializar carrito<br/>de compras]
+    GoCatalog --> BrowseProducts[Ver lista de productos<br/>o buscar]
+    
+    BrowseProducts --> Search{¿Buscar<br/>producto?}
+    Search -->|Sí| EnterSearch[Escribir nombre/código<br/>de producto]
+    EnterSearch --> ShowResults[Mostrar resultados<br/>en tiempo real]
+    ShowResults --> SelectProduct[Seleccionar producto]
+    Search -->|No| SelectProduct
+    
+    SelectProduct --> ViewDetails[Ver detalles del producto<br/>Precio, descripción, disponibilidad]
+    ViewDetails --> AddToCart{¿Agregar<br/>al carrito?}
+    
+    AddToCart -->|Sí| AddProduct[Agregar producto<br/>al carrito]
+    AddToCart -->|No| BrowseProducts
+    
+    AddProduct --> UpdateTotal[Actualizar total<br/>del pedido en tiempo real]
+    UpdateTotal --> MoreProducts{¿Agregar más<br/>productos?}
+    
+    MoreProducts -->|Sí| BrowseProducts
+    MoreProducts -->|No| SelectClient[Seleccionar cliente<br/>para el pedido]
+    
+    InitCart --> SelectClient
+    
+    SelectClient --> ClientExists{¿Cliente<br/>existe?}
+    
+    ClientExists -->|Sí| SearchClient[Buscar cliente<br/>por nombre/teléfono]
+    SearchClient --> SelectFromList[Seleccionar de lista]
+    SelectFromList --> ReviewOrder[Revisar pedido<br/>Productos, total, cliente]
+    
+    ClientExists -->|No| CreateClient[Crear nuevo cliente<br/>Nombre, teléfono, email]
+    CreateClient --> ValidateClient{Validar datos<br/>del cliente}
+    ValidateClient -->|Válido| SaveClient[Guardar cliente<br/>y seleccionar]
+    ValidateClient -->|Inválido| ShowError[Mostrar error<br/>y corregir]
+    ShowError --> CreateClient
+    SaveClient --> ReviewOrder
+    
+    ReviewOrder --> ApplyPromos[Aplicar promociones<br/>vigentes automáticamente]
+    ApplyPromos --> ShowFinalTotal[Mostrar total final<br/>con descuentos aplicados]
+    ShowFinalTotal --> ConfirmOrder{¿Confirmar<br/>y enviar pedido?}
+    
+    ConfirmOrder -->|No| ReviewOrder
+    ConfirmOrder -->|Sí| ValidateOrder{Validar pedido<br/>Disponibilidad, datos cliente}
+    
+    ValidateOrder -->|Válido| CheckConnection2{¿Hay<br/>conexión?}
+    ValidateOrder -->|Inválido| ShowValidationError[Mostrar errores<br/>de validación]
+    ShowValidationError --> ReviewOrder
+    
+    CheckConnection2 -->|Sí| SendOrder[Enviar pedido<br/>a sistema central]
+    CheckConnection2 -->|No| SaveOffline[Guardar pedido<br/>localmente para sincronizar]
+    
+    SendOrder --> WaitResponse[Esperar respuesta<br/>del servidor]
+    WaitResponse --> ResponseReceived{¿Pedido<br/>enviado?}
+    
+    ResponseReceived -->|Sí| GenerateReceipt[Generar recibo digital<br/>con número de pedido]
+    ResponseReceived -->|No| ShowError2[Mostrar error<br/>y permitir reintento]
+    ShowError2 --> SendOrder
+    
+    GenerateReceipt --> ShowConfirmation[Mostrar confirmación<br/>Pedido #XXX creado exitosamente]
+    SaveOffline --> ShowOfflineMsg[Mostrar mensaje:<br/>Pedido guardado, se enviará<br/>al recuperar conexión]
+    
+    ShowConfirmation --> SyncBackground[Sincronizar en background<br/>Actualizar dashboard]
+    ShowOfflineMsg --> SyncBackground
+    
+    SyncBackground --> ClearCart[Limpiar carrito]
+    ClearCart --> End([Fin: Pedido creado<br/>Regresar a Dashboard])
+    
+    style Start fill:#28a745,stroke:#1e7e34,stroke-width:3px,color:#fff
+    style End fill:#dc3545,stroke:#c82333,stroke-width:3px,color:#fff
+    style SelectMethod fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style Search fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style AddToCart fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style MoreProducts fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ClientExists fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ValidateClient fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ConfirmOrder fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ValidateOrder fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style CheckConnection2 fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ResponseReceived fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ReviewOrder fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style SendOrder fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+                </div>
+            </div>
+
+            <div class="description">
+                <h4>Características Clave del Flujo</h4>
+                <ul>
+                    <li><strong>Tiempo objetivo:</strong> &lt; 2 minutos para pedido simple</li>
+                    <li><strong>Modo offline:</strong> Permite crear pedidos sin conexión, se sincronizan automáticamente</li>
+                    <li><strong>Validaciones:</strong> Verifica disponibilidad de productos y datos del cliente antes de enviar</li>
+                    <li><strong>Promociones automáticas:</strong> El sistema aplica descuentos vigentes sin intervención manual</li>
+                    <li><strong>Feedback inmediato:</strong> Total del pedido se actualiza en tiempo real al agregar productos</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Flujo: Gestionar Clientes -->
+        <div class="diagram-section">
+            <h2>👥 Flujo: Gestionar Clientes</h2>
+            <p style="color: #666; margin-bottom: 20px;">Proceso para crear, buscar y gestionar clientes (US-001)</p>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+flowchart TD
+    Start([Inicio: Consultora va a<br/>sección Clientes]) --> LoadClients[Cargar lista de clientes<br/>desde caché local]
+    
+    LoadClients --> ShowList[Mostrar lista de clientes<br/>con búsqueda rápida]
+    ShowList --> UserAction{¿Qué acción<br/>desea realizar?}
+    
+    UserAction -->|Buscar Cliente| EnterSearch[Escribir en barra<br/>de búsqueda]
+    UserAction -->|Crear Cliente| ClickNew[Click en 'Nuevo Cliente']
+    UserAction -->|Ver Cliente| SelectClient[Seleccionar cliente<br/>de la lista]
+    
+    EnterSearch --> RealTimeSearch[Búsqueda en tiempo real<br/>Filtrar por nombre/teléfono]
+    RealTimeSearch --> ShowResults[Mostrar resultados<br/>mientras escribe]
+    ShowResults --> SelectFromResults[Seleccionar cliente<br/>de resultados]
+    SelectFromResults --> ViewClientDetails
+    
+    SelectClient --> ViewClientDetails[Ver detalles del cliente<br/>Información, historial, notas]
+    
+    ViewClientDetails --> ClientActions{¿Qué hacer<br/>con el cliente?}
+    
+    ClientActions -->|Editar| EditClient[Editar información<br/>del cliente]
+    ClientActions -->|Agregar Nota| AddNote[Agregar nota o<br/>recordatorio]
+    ClientActions -->|Ver Historial| ViewHistory[Ver historial<br/>de pedidos]
+    ClientActions -->|Usar en Pedido| UseInOrder[Usar cliente<br/>para nuevo pedido]
+    ClientActions -->|Volver| ShowList
+    
+    EditClient --> ValidateEdit{Validar datos<br/>editados}
+    ValidateEdit -->|Válido| SaveEdit[Guardar cambios<br/>y sincronizar]
+    ValidateEdit -->|Inválido| ShowError[Mostrar error<br/>y permitir corrección]
+    ShowError --> EditClient
+    SaveEdit --> ViewClientDetails
+    
+    AddNote --> SaveNote[Guardar nota<br/>con fecha opcional]
+    SaveNote --> ViewClientDetails
+    
+    ViewHistory --> ShowOrders[Mostrar lista de pedidos<br/>del cliente ordenados por fecha]
+    ShowOrders --> OrderDetail{¿Ver detalle<br/>de pedido?}
+    OrderDetail -->|Sí| ViewOrderDetail[Ver detalle completo<br/>del pedido seleccionado]
+    OrderDetail -->|No| ViewClientDetails
+    ViewOrderDetail --> ShowOrders
+    
+    UseInOrder --> GoToOrder[Ir a flujo<br/>Crear Pedido]
+    
+    ClickNew --> ShowForm[Mostrar formulario<br/>de nuevo cliente]
+    ShowForm --> FillData[Llenar datos:<br/>Nombre, Teléfono, Email opcional]
+    FillData --> ValidateNew{Validar datos<br/>del nuevo cliente}
+    
+    ValidateNew -->|Teléfono duplicado| ShowDuplicateError[Mostrar error:<br/>Cliente ya existe]
+    ShowDuplicateError --> FillData
+    ValidateNew -->|Datos inválidos| ShowValidationError[Mostrar errores<br/>de validación]
+    ShowValidationError --> FillData
+    ValidateNew -->|Válido| SaveNew[Guardar nuevo cliente<br/>localmente]
+    
+    SaveNew --> SyncClient[Sincronizar con servidor<br/>en background]
+    SyncClient --> ShowSuccess[Mostrar mensaje:<br/>Cliente creado exitosamente]
+    ShowSuccess --> ViewClientDetails
+    
+    style Start fill:#28a745,stroke:#1e7e34,stroke-width:3px,color:#fff
+    style UserAction fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ClientActions fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ValidateEdit fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ValidateNew fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style OrderDetail fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ViewClientDetails fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style SaveNew fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+                </div>
+            </div>
+
+            <div class="description">
+                <h4>Características del Flujo</h4>
+                <ul>
+                    <li><strong>Tiempo objetivo de búsqueda:</strong> &lt; 10 segundos</li>
+                    <li><strong>Búsqueda en tiempo real:</strong> Resultados aparecen mientras el usuario escribe</li>
+                    <li><strong>Validación de duplicados:</strong> Previene crear clientes con teléfono duplicado</li>
+                    <li><strong>Historial completo:</strong> Acceso rápido al historial de pedidos de cada cliente</li>
+                    <li><strong>Notas y recordatorios:</strong> Permite agregar información adicional por cliente</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Flujo: Ver Catálogo -->
+        <div class="diagram-section">
+            <h2>📦 Flujo: Ver Catálogo y Productos</h2>
+            <p style="color: #666; margin-bottom: 20px;">Proceso para explorar y buscar productos (US-002)</p>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+flowchart TD
+    Start([Inicio: Consultora va a<br/>sección Catálogo]) --> CheckSync{¿Catálogo<br/>sincronizado?}
+    
+    CheckSync -->|No| SyncCatalog[Sincronizar catálogo<br/>con servidor]
+    CheckSync -->|Sí| LoadCatalog[Cargar catálogo<br/>desde caché local]
+    
+    SyncCatalog --> LoadCatalog
+    LoadCatalog --> ShowCatalog[Mostrar lista de productos<br/>con imágenes y precios]
+    
+    ShowCatalog --> UserAction{¿Qué acción<br/>desea realizar?}
+    
+    UserAction -->|Buscar Producto| EnterSearch[Escribir nombre/código<br/>de producto]
+    UserAction -->|Filtrar| ApplyFilters[Aplicar filtros:<br/>Categoría, precio, disponibilidad]
+    UserAction -->|Ver Producto| SelectProduct[Seleccionar producto<br/>de la lista]
+    UserAction -->|Scroll| LoadMore[Cargar más productos<br/>Paginación]
+    
+    EnterSearch --> RealTimeSearch[Búsqueda en tiempo real<br/>Resultados mientras escribe]
+    RealTimeSearch --> ShowSearchResults[Mostrar resultados<br/>de búsqueda]
+    ShowSearchResults --> SelectProduct
+    
+    ApplyFilters --> FilterResults[Mostrar productos<br/>filtrados]
+    FilterResults --> SelectProduct
+    
+    LoadMore --> ShowCatalog
+    
+    SelectProduct --> ViewDetails[Ver detalles del producto<br/>Imagen, precio, descripción,<br/>ingredientes, modo de uso]
+    
+    ViewDetails --> ProductAction{¿Qué hacer<br/>con el producto?}
+    
+    ProductAction -->|Agregar a Carrito| AddToCart[Agregar al carrito<br/>Seleccionar cantidad]
+    ProductAction -->|Ver Similar| ShowSimilar[Mostrar productos<br/>similares]
+    ProductAction -->|Compartir| ShareProduct[Compartir producto<br/>Fase 2]
+    ProductAction -->|Volver| ShowCatalog
+    
+    AddToCart --> ConfirmAdd{¿Confirmar<br/>cantidad?}
+    ConfirmAdd -->|Sí| UpdateCart[Actualizar carrito<br/>y mostrar confirmación]
+    ConfirmAdd -->|No| ViewDetails
+    
+    UpdateCart --> ContinueShopping{¿Continuar<br/>comprando?}
+    ContinueShopping -->|Sí| ShowCatalog
+    ContinueShopping -->|No| GoToCart[Ir a carrito<br/>para crear pedido]
+    
+    ShowSimilar --> SelectProduct
+    ShareProduct --> ViewDetails
+    
+    GoToCart --> FlowPedido[Ir a flujo<br/>Crear Pedido]
+    
+    style Start fill:#28a745,stroke:#1e7e34,stroke-width:3px,color:#fff
+    style CheckSync fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style UserAction fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ProductAction fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ConfirmAdd fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ContinueShopping fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ViewDetails fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style AddToCart fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+                </div>
+            </div>
+
+            <div class="description">
+                <h4>Características del Flujo</h4>
+                <ul>
+                    <li><strong>Tiempo de carga objetivo:</strong> &lt; 3 segundos para carga inicial</li>
+                    <li><strong>Búsqueda inteligente:</strong> Resultados relevantes mientras el usuario escribe</li>
+                    <li><strong>Filtros avanzados:</strong> Por categoría, precio, disponibilidad de stock</li>
+                    <li><strong>Información completa:</strong> Detalles del producto incluyen ingredientes y modo de uso</li>
+                    <li><strong>Integración con pedidos:</strong> Agregar productos directamente al carrito desde el catálogo</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Flujo: Dashboard y Sincronización -->
+        <div class="diagram-section">
+            <h2>📊 Flujo: Dashboard y Sincronización</h2>
+            <p style="color: #666; margin-bottom: 20px;">Proceso de visualización de métricas y sincronización de datos (US-004, US-005)</p>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+flowchart TD
+    Start([Inicio: Consultora abre app<br/>o regresa al Dashboard]) --> CheckAuth{¿Usuario<br/>autenticado?}
+    
+    CheckAuth -->|No| RedirectLogin[Redirigir a<br/>pantalla de login]
+    CheckAuth -->|Sí| CheckConnection{¿Hay<br/>conexión?}
+    
+    CheckConnection -->|Sí| SyncData[Sincronizar datos:<br/>Catálogo, clientes, pedidos]
+    CheckConnection -->|No| UseCache[Usar datos en caché<br/>Mostrar indicador offline]
+    
+    SyncData --> LoadMetrics[Cargar métricas:<br/>Ventas, clientes, pedidos]
+    UseCache --> LoadMetrics
+    
+    LoadMetrics --> ShowDashboard[Mostrar Dashboard:<br/>Resumen de ventas mes actual<br/>Comparación con mes anterior<br/>Clientes activos<br/>Pedidos pendientes<br/>Comisiones acumuladas]
+    
+    ShowDashboard --> UserInteraction{¿Qué acción<br/>desea realizar?}
+    
+    UserInteraction -->|Ver Detalle Ventas| ExpandSales[Expandir gráfico<br/>de ventas]
+    UserInteraction -->|Ver Pedidos| GoToOrders[Ir a lista<br/>de pedidos]
+    UserInteraction -->|Nueva Acción| QuickAction[Acceso rápido:<br/>Nuevo Pedido, Nuevo Cliente]
+    UserInteraction -->|Refrescar| RefreshData[Refrescar datos<br/>y sincronizar]
+    UserInteraction -->|Navegar| Navigate[Ir a otra sección:<br/>Catálogo, Clientes, etc.]
+    
+    ExpandSales --> ShowDetailChart[Mostrar gráfico detallado<br/>Ventas por día/semana]
+    ShowDetailChart --> ShowDashboard
+    
+    GoToOrders --> FlowPedidos[Flujo: Ver Pedidos]
+    FlowPedidos --> ShowDashboard
+    
+    QuickAction --> ExecuteAction[Ejecutar acción<br/>correspondiente]
+    ExecuteAction --> ShowDashboard
+    
+    RefreshData --> CheckConnection2{¿Hay<br/>conexión?}
+    CheckConnection2 -->|Sí| SyncData2[Sincronizar datos<br/>actualizados]
+    CheckConnection2 -->|No| ShowOfflineMsg[Mostrar mensaje:<br/>Sin conexión, usando datos<br/>en caché]
+    ShowOfflineMsg --> ShowDashboard
+    
+    SyncData2 --> UpdateMetrics[Actualizar métricas<br/>en tiempo real]
+    UpdateMetrics --> ShowDashboard
+    
+    Navigate --> OtherSection[Ir a sección<br/>seleccionada]
+    OtherSection --> ShowDashboard
+    
+    ShowDashboard --> BackgroundSync{¿Sincronización<br/>en background?}
+    BackgroundSync -->|Cada 15 min| AutoSync[Sincronizar automáticamente<br/>sin interrumpir usuario]
+    BackgroundSync -->|Manual| ShowDashboard
+    
+    AutoSync --> ShowDashboard
+    
+    style Start fill:#28a745,stroke:#1e7e34,stroke-width:3px,color:#fff
+    style CheckAuth fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style CheckConnection fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style CheckConnection2 fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style UserInteraction fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style BackgroundSync fill:#ffc107,stroke:#e0a800,stroke-width:2px
+    style ShowDashboard fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style SyncData fill:#17a2b8,stroke:#138496,stroke-width:2px,color:#fff
+                </div>
+            </div>
+
+            <div class="description">
+                <h4>Características del Dashboard</h4>
+                <ul>
+                    <li><strong>Métricas clave:</strong> Ventas del mes, comparación mensual, clientes activos, pedidos pendientes</li>
+                    <li><strong>Sincronización automática:</strong> Cada 15 minutos en background sin interrumpir al usuario</li>
+                    <li><strong>Modo offline:</strong> Funciona con datos en caché cuando no hay conexión</li>
+                    <li><strong>Actualización en tiempo real:</strong> Métricas se actualizan automáticamente al sincronizar</li>
+                    <li><strong>Accesos rápidos:</strong> Botones para acciones más comunes (nuevo pedido, nuevo cliente)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>Nota:</strong> Estos diagramas BPMN representan los flujos principales del journey del usuario basados en el PRD PP-009. 
+            Los tiempos objetivos y funcionalidades están alineados con los requisitos funcionales y user stories documentados.
+            Los flujos de Fase 2 (omnicanal, pagos, notificaciones) se pueden agregar como extensiones de estos diagramas base.
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis',
+                padding: 20
+            },
+            themeVariables: {
+                primaryColor: '#3498db',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#2980b9',
+                lineColor: '#34495e',
+                secondaryColor: '#ecf0f1',
+                tertiaryColor: '#bdc3c7'
+            }
+        });
+    </script>
+</body>
+</html>
+
